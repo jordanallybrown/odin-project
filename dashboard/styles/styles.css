@@ -242,7 +242,7 @@ main .content {
     border-radius: 8px;
     -webkit-box-shadow: 1px 2px 4px 1px #cbd5e1; 
     box-shadow: 1px 2px 4px 1px #cbd5e1;
-    padding: 24px 16px 16px 24px;
+    padding: 24px 16px 24px 24px;
     display: grid;
     row-gap: 16px;
 }
@@ -256,8 +256,12 @@ main .content {
     font-weight: 700;
 }
 
-.post-highlight {
+.widget-card-icon article {
     display: grid;
     grid-template-columns: auto 1fr;
     column-gap: 8px;
+}
+
+.widget-card article:last-child {
+    border-bottom: none;
 }
