@@ -2,6 +2,8 @@
     --blue: #0ea5e9;
     --gray: #e2e8f0;
     --off-white: #f8fafc;
+    --off-gray: #6b7280;
+    --orange: #f59e0b;
 
 }
 
@@ -28,6 +30,10 @@ h1 {
 
 h2 {
     font-size: 1.3rem;
+}
+
+h3 {
+    font-size: 1.1rem;
 }
 
 ul {
@@ -151,7 +157,41 @@ main .content {
 
 .left {
     border: 2px solid pink;
+    display: grid;
+    /* This auto feature in grid is sooo convenient when you want to squish content! */
+    grid-template-rows: auto 1fr;
+    row-gap: 8px;
 
+}
+
+.cards {
+    border: 2px solid sandybrown;
+}
+
+.card {
+    background-color: white;
+    width: 300px;
+    height: 200px;
+    position: relative;
+    border-radius: 8px;
+    margin-left: 30px;
+}
+
+.card::before {
+    content: "";
+    height: 100%;
+    width: 8px;
+    background-color: var(--orange);
+    position: absolute;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.card p {
+    font-size: 1rem;
+    color: var(--off-gray);
+    margin: 0;
+    
 }
 
 .right {
