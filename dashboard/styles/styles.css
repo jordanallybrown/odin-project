@@ -25,6 +25,11 @@ h1, h2, h3, h4 {
 h1 {
     font-size: 1.6rem;
 }
+
+h2 {
+    font-size: 1.3rem;
+}
+
 ul {
     padding: 0;
     margin: 0;
@@ -139,4 +144,16 @@ button {
 
 main .content {
     background: var(--gray);
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    padding: 32px 24px 48px 16px;
+}
+
+.left {
+    border: 2px solid pink;
+
+}
+
+.right {
+    border: 2px solid salmon;
 }
