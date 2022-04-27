@@ -161,7 +161,6 @@ main .content {
 }
 
 .left {
-    border: 2px solid pink;
     display: grid;
     /* This auto feature in grid is sooo convenient when you want to squish content! */
     grid-template-rows: auto 1fr;
@@ -172,13 +171,13 @@ main .content {
 
 
 .cards {
-    border: 2px solid sandybrown;
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 24px;
 }
 
 .card {
     background-color: white;
-    /* width: 300px;
-    height: 200px; */
     position: relative;
     border-radius: 8px;
     -webkit-box-shadow: 1px 2px 4px 1px #cbd5e1; 
@@ -186,6 +185,7 @@ main .content {
     display: grid;
     padding: 24px 16px 16px 24px;
     grid-template-rows: 1fr auto;
+    row-gap: 8px;
 }
 
 .card::before {
@@ -202,12 +202,8 @@ main .content {
 .card-title {
     padding-bottom: 2px;
 }
-.card-content {
-    border: 2px solid blueviolet;
-}
 
 .card-icons {
-    border: 2px solid rosybrown;
     display: grid;
     justify-content: flex-end;
     grid-auto-flow: column;
