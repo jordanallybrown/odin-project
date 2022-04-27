@@ -129,6 +129,13 @@ input[type=text] {
     padding: 0;
 }
 
+button {
+    background-color: var(--blue);
+    color: white;
+    border: none;
+    padding: 8px 32px;
+    border-radius: 32px;
+}
 
 main .content {
     background: var(--gray);
