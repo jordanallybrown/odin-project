@@ -1,0 +1,135 @@
+:root {
+    --blue: #0ea5e9;
+    --gray: #e2e8f0;
+    --off-white: #f8fafc;
+
+}
+
+.material-symbols-outlined.md-18 { font-size: 18px; }
+.material-symbols-outlined.md-24 { font-size: 24px; }
+.material-symbols-outlined.md-36 { font-size: 36px; }
+.material-symbols-outlined.md-48 { font-size: 48px; }
+
+body {
+    font-family: 'Roboto', sans-serif;
+    height: 100vh;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+}
+
+h1, h2, h3, h4 {
+    margin: 0;
+}
+
+h1 {
+    font-size: 1.6rem;
+}
+ul {
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    list-style-type: none;
+}
+
+.sidebar {
+    background-color: var(--blue);
+    display: grid;
+    /* grid-template-rows: 1fr repeat(2, 2fr) 6fr; */
+    /* This will squish the sidebar elements to the top and leave a wide, empty space at the bottom */
+    grid-template-rows: repeat(3, auto) 1fr;
+    row-gap: 48px;
+    color: white;
+    padding-left: 16px;
+    padding-top: 16px;
+    
+}
+
+.logo {
+    display: grid;
+    column-gap: 8px;
+    font-size: 1.6rem;
+    font-weight: 500;
+    /* The auto will take up only as much space as it needs, while 1fr will take up all the remaining space */
+    grid-template-columns: auto 1fr; 
+    align-items: center;
+}
+
+.primary-menu li, .secondary-menu li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 16px;
+    align-items: center;
+}
+
+.primary-menu, .secondary-menu{
+    display: grid;
+    row-gap: 16px;
+}
+
+
+main {
+    display: grid;
+    grid-template-rows: 1fr 4fr;
+}
+
+main header {
+    background: white;
+    display: grid;
+    grid-template-rows: 1fr 2fr;
+    padding-left: 32px;
+    padding-right: 48px;
+  
+
+}
+.user-menu {
+    display: grid;
+    grid-template-columns: auto 1fr repeat(3, auto);
+    column-gap: 16px;
+    align-items: center;
+}
+
+
+.sm-profile {
+    font-size: 32px;
+}
+
+.username {
+    font-weight: 500;
+    font-size: 1.2rem;
+}
+input[type=text] {
+    width: 95%;
+    height: 2rem;
+    padding: 12px 20px;
+    border: none;
+    background-color: var(--gray);
+    /* margin: 8px 0; */
+    border-radius: 50px;
+    box-sizing: border-box;
+  }
+
+.user-options {
+    display: grid;
+    /* Neat trick from Wes Bros so you can add more buttons later if needed in the layout */
+    grid-template-columns: auto 1fr;
+    grid-auto-flow: column;
+    align-items: center;
+    column-gap: 16px;
+}
+
+.lg-profile {
+    font-size: 48px;
+}
+
+.headline p {
+    margin: 0;
+    padding: 0;
+}
+
+
+main .content {
+    background: var(--gray);
+}
