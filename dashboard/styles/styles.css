@@ -164,6 +164,8 @@ main .content {
 
 }
 
+
+
 .cards {
     border: 2px solid sandybrown;
 }
@@ -175,6 +177,9 @@ main .content {
     position: relative;
     border-radius: 8px;
     margin-left: 30px;
+    -webkit-box-shadow: 2px 2px 4px 3px #cbd5e1; 
+    box-shadow: 2px 2px 4px 3px #cbd5e1;
+
 }
 
 .card::before {
@@ -183,8 +188,18 @@ main .content {
     width: 8px;
     background-color: var(--orange);
     position: absolute;
+    /* Super cool - I was able to target just the edges that I needed! */
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
+    
+}
+
+.card-content {
+    /* padding: 24px 16px 16px 24px; */
+}
+
+.card-icons {
+
 }
 
 .card p {
