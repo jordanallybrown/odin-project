@@ -91,12 +91,6 @@ function displayBooks() {
         });
 }
 
-function removeBookCard(index) {
-    // myLibrary.splice(index, 1);
-    const book = document.querySelector(`[data-index="${index}"]`);
-    console.log(`We need to remove this book: ${book}`);
-    // book.remove();
-}
 
 function togglePopup() {
     container.classList.toggle('low-opacity');
