@@ -19,6 +19,11 @@ const Gameboard = (() => {
         return gameboard[position] === null;
     }
 
+    const getOpenPositions = () => {
+        // return array of all the positions that are NOT null
+        return gameboard.filter(position => position !== null)
+    }
+
     const isBoardFull = () => {
         // every returns true if all elements pass the test, so checking if all not null
         return gameboard.every(position => position !== null)
