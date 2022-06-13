@@ -76,6 +76,30 @@ const Gameboard = (() => {
 
 })();
 
+// Factories
+const Player = (name, symbol) => {
+    let score = 0;
+    const getName = () => name;
+    const getSymbol = () => symbol;
+    const addScore = () => {
+        score++;
+    }
+    const resetScore = () => {
+        score = 0;
+    }
+
+    return {getName, getSymbol, addScore, resetScore}
+}
+
+// Factory with inheritance
+const AIPlayer = (name, symbol) => {
+    const prototype = Player(name, symbol);
+    
+    const getPosition = (positions) => Math.floor(Math.random() * positions.length);
+    // put all the properties of prototype and aiplayer methods into a new object
+    return Object.assign({}, prototype, {getPosition});
+}
+
 // Small console test cases
 // Print board
 Gameboard.display();
