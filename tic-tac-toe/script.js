@@ -112,6 +112,15 @@ const GameController = (() => {
     const status = document.querySelector('#status');
     const board = document.querySelector('.gameboard');
 
+    // For now, hardcode the names and symbols
+    let player = Player('player', 'X');
+    let computer = AIPlayer('computer', 'O');
+    let isPlaying = false;
+
+    const toggleIsPlaying = () => {
+        isPlaying = !isPlaying; 
+    }
+
     const setupBoard = () => {
         let fragment = document.createDocumentFragment();
         let button, index = 0;
@@ -126,6 +135,20 @@ const GameController = (() => {
         }
         board.appendChild(fragment);
     }
+
+    const activateBoard = (enable) => {
+        if (enable) {
+            
+        } else {
+
+        }
+    }
+
+   startButton.addEventListener('click', function(e) {
+        e.target.textContent = isPlaying ? e.target.textContent = 'Start' : e.target.textContent = 'Restart';
+        toggleIsPlaying();
+   });
+    
     
     return {setupBoard};
 })();
