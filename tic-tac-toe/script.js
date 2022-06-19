@@ -134,18 +134,24 @@ const GameController = (() => {
             index++;
         }
         board.appendChild(fragment);
+        activateBoard(false);
     }
 
     const activateBoard = (enable) => {
-        if (enable) {
-            
-        } else {
-
-        }
+        const allButtons = document.querySelectorAll('.gameboard button');
+        allButtons.forEach(button => {
+            button.disabled = enable ? false : true;
+        });
     }
 
    startButton.addEventListener('click', function(e) {
-        e.target.textContent = isPlaying ? e.target.textContent = 'Start' : e.target.textContent = 'Restart';
+        if (isPlaying) {
+            e.target.textContent = 'Start';
+            activateBoard(false);
+        } else {
+            e.target.textContent = 'Restart';
+            activateBoard(true);
+        }
         toggleIsPlaying();
    });
     
