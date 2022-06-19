@@ -5,6 +5,8 @@ const Gameboard = (() => {
     const gridSize = 9;
     const gameboard = Array(gridSize).fill(null);
     
+    const getGridSize = () => gridSize;
+
     const markBoard = (position, symbol) => {
         if (isOpenPosition(position) && isValidPosition(position)) {
             gameboard[position] = symbol;
@@ -77,7 +79,7 @@ const Gameboard = (() => {
         console.log(gameboard)
     }
 
-    return {markBoard, clearBoard, checkWinner, display}
+    return {markBoard, clearBoard, checkWinner, display, getGridSize, getOpenPositions}
 
 })();
 
@@ -105,12 +107,37 @@ const AIPlayer = (name, symbol) => {
     return Object.assign({}, prototype, {getPosition});
 }
 
+const GameController = (() => {
+    const startButton = document.querySelector('#start-btn');
+    const status = document.querySelector('#status');
+    const board = document.querySelector('.gameboard');
+
+    const setupBoard = () => {
+        let fragment = document.createDocumentFragment();
+        let button, index = 0;
+        while (index < Gameboard.getGridSize()) {
+            button = document.createElement('button');
+            button.dataset.index = index;
+            button.addEventListener('click', function(e){
+                // console.log(e.target.dataset['index']);
+            });
+            fragment.appendChild(button);
+            index++;
+        }
+        board.appendChild(fragment);
+    }
+    
+    return {setupBoard};
+})();
+
+GameController.setupBoard();
+
 // Small console test cases
 // Print board
-Gameboard.display();
+// Gameboard.display();
 // Make winning marks
-Gameboard.markBoard(0, 'x');
-Gameboard.markBoard(1, 'o');
+// Gameboard.markBoard(0, 'x');
+// Gameboard.markBoard(1, 'o');
 // Gameboard.markBoard(2, 'o');
 // Gameboard.markBoard(3, 'o');
 // Gameboard.markBoard(4, 'x');
@@ -118,12 +145,12 @@ Gameboard.markBoard(1, 'o');
 // Gameboard.markBoard(6, 'x');
 // Gameboard.markBoard(7, 'o');
 // Gameboard.markBoard(8, 'o');
-Gameboard.display();
+// Gameboard.display();
 // Check for winner
-console.log(Gameboard.checkWinner());
+// console.log(Gameboard.checkWinner());
 // Make invalid and valid marks, show board
 // Gameboard.markBoard(10, 'x');
 // Gameboard.markBoard(-1, 'x');
 // Gameboard.markBoard(0, 'o');
 // Gameboard.markBoard(3, 'o');
-Gameboard.display();
+// Gameboard.display();
