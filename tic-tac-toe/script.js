@@ -39,9 +39,9 @@ const Gameboard = (() => {
 
     /**
      * Returns an object detailing if there is a winner, and if so, their symbol. E.g.
-     * In the case of a winner, returns {isWinner: true, result: 'win', symbol: 'x'}
-     * No winner, returns {isWinner: false, result : 'none'}
-     * Tie, returns {isWinner: false, result: 'tie'}
+     * In the case of a winner, returns {isGameOver: true, result: 'win', symbol: 'x'}
+     * No winner, returns {isGameOver: false, result : 'none'}
+     * Tie, returns {isGameOver: true, result: 'tie'}
      * @returns Object
      */
     const checkWinner = () => {
@@ -68,11 +68,11 @@ const Gameboard = (() => {
         const winningPosition = allWinningPositions.find(positions => isSymbolMatch(...positions))
 
         if (winningPosition) {
-            return {isWinner: true, result: 'win', symbol: gameboard[winningPosition[0]]}
+            return {isGameOver: true, result: 'win', symbol: gameboard[winningPosition[0]]}
         } else {
             return isBoardFull() ? 
-            {isWinner: false, result: 'tie'} 
-            : {isWinner: false, result: 'none'}
+            {isGameOver: true, result: 'tie'} 
+            : {isGameOver: false, result: 'none'}
         }
       
     }
@@ -149,7 +149,14 @@ const GameController = (() => {
     }
 
     const updateGame = (buttonIndex) => {
-        let currentPlayer = isPlayer1Turn ? player1 : player2;
+        // Check for a winner to see if game is over
+        // const gameStatus = Gameboard.checkWinner();
+
+        // if (isPlaying) {
+        //     let currentPlayer = isPlayer1Turn ? player1 : player2;
+        //     let isMarked = Gameboard.markBoard(buttonIndex, currentPlayer.getSymbol());
+        // }
+        
 
     }
 
