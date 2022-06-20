@@ -10,7 +10,9 @@ const Gameboard = (() => {
     const markBoard = (position, symbol) => {
         if (isOpenPosition(position) && isValidPosition(position)) {
             gameboard[position] = symbol;
+            return true;
         }
+        return false;
     }
 
     const isValidPosition = (position) => {
@@ -113,9 +115,10 @@ const GameController = (() => {
     const board = document.querySelector('.gameboard');
 
     // For now, hardcode the names and symbols
-    let player = Player('player', 'X');
-    let computer = AIPlayer('computer', 'O');
+    let player1 = Player('player', 'X');
+    let player2 = AIPlayer('computer', 'O');
     let isPlaying = false;
+    let isPlayer1Turn = true;
 
     const toggleIsPlaying = () => {
         isPlaying = !isPlaying; 
@@ -129,6 +132,7 @@ const GameController = (() => {
             button.dataset.index = index;
             button.addEventListener('click', function(e){
                 // console.log(e.target.dataset['index']);
+                updateGame(e.target.dataset['index']);
             });
             fragment.appendChild(button);
             index++;
@@ -144,16 +148,22 @@ const GameController = (() => {
         });
     }
 
-   startButton.addEventListener('click', function(e) {
-        if (isPlaying) {
-            e.target.textContent = 'Start';
-            activateBoard(false);
-        } else {
-            e.target.textContent = 'Restart';
-            activateBoard(true);
-        }
-        toggleIsPlaying();
-   });
+    const updateGame = (buttonIndex) => {
+        let currentPlayer = isPlayer1Turn ? player1 : player2;
+
+    }
+
+    startButton.addEventListener('click', function(e) {
+            if (isPlaying) {
+                e.target.textContent = 'Start';
+                activateBoard(false);
+            } else {
+                e.target.textContent = 'Restart';
+                activateBoard(true);
+            }
+            toggleIsPlaying();
+    });
+
     
     
     return {setupBoard};
