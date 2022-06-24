@@ -3,8 +3,11 @@
 // Modules - immediately invoked functions
 const Gameboard = (() => {
     const gridSize = 9;
-    const gameboard = Array(gridSize).fill(null);
+    let gameboard;
     
+    const getBoard = () => {
+        return gameboard;
+    }
     const getGridSize = () => gridSize;
 
     const markBoard = (position, symbol) => {
@@ -33,7 +36,7 @@ const Gameboard = (() => {
         return gameboard.every(position => position !== null)
     }
 
-    const clearBoard = () => {
+    const initBoard = () => {
         gameboard = Array(gridSize).fill(null);
     }
 
@@ -81,7 +84,7 @@ const Gameboard = (() => {
         console.log(gameboard)
     }
 
-    return {markBoard, clearBoard, checkWinner, display, getGridSize, getOpenPositions}
+    return {markBoard, initBoard, checkWinner, display, getGridSize, getOpenPositions, getBoard}
 
 })();
 
@@ -111,17 +114,21 @@ const AIPlayer = (name, symbol) => {
 
 const GameController = (() => {
     const startButton = document.querySelector('#start-btn');
-    const status = document.querySelector('#status');
+    const messageDisplay = document.querySelector('#status');
     const board = document.querySelector('.gameboard');
 
     // For now, hardcode the names and symbols
-    let player1 = Player('player', 'X');
-    let player2 = AIPlayer('computer', 'O');
+    let player1 = Player('player1', 'X');
+    let player2 = Player('player2', 'O');
     let isPlaying = false;
     let isPlayer1Turn = true;
 
     const toggleIsPlaying = () => {
         isPlaying = !isPlaying; 
+    }
+
+    const toggleIsPlayer1Turn = () => {
+        isPlayer1Turn = !isPlayer1Turn;
     }
 
     const setupBoard = () => {
@@ -132,6 +139,7 @@ const GameController = (() => {
             button.dataset.index = index;
             button.addEventListener('click', function(e){
                 // console.log(e.target.dataset['index']);
+                // If I pass button directly into the method below something seems to bubble up? e.g. clicking index 0 turns into the last button index 8. But I don't totally understand the behavior. Will look up later how click events work
                 updateGame(e.target.dataset['index']);
             });
             fragment.appendChild(button);
@@ -139,6 +147,8 @@ const GameController = (() => {
         }
         board.appendChild(fragment);
         activateBoard(false);
+
+        Gameboard.initBoard();
     }
 
     const activateBoard = (enable) => {
@@ -148,16 +158,42 @@ const GameController = (() => {
         });
     }
 
-    const updateGame = (buttonIndex) => {
+    const updateGame = (index) => {
+        let currentPlayer = isPlayer1Turn ? player1 : player2;
+        let square = document.querySelector(`[data-index='${index}']`);
+
+        let isMarked = false;
+        do {
+            isMarked = Gameboard.markBoard(index, currentPlayer.getSymbol());
+        } while (!isMarked); 
+
+        // Update the display to reflect underlying Gameboard
+        square.textContent = currentPlayer.getSymbol();
+
         // Check for a winner to see if game is over
-        // const gameStatus = Gameboard.checkWinner();
+        const gameStatus = Gameboard.checkWinner();
 
-        // if (isPlaying) {
-        //     let currentPlayer = isPlayer1Turn ? player1 : player2;
-        //     let isMarked = Gameboard.markBoard(buttonIndex, currentPlayer.getSymbol());
-        // }
-        
+        if (gameStatus.isGameOver) {
+            // display the winner
+            if (gameStatus.result === 'tie') {
+                messageDisplay.textContent = `It's a tie!`;
+            } else {
+                messageDisplay.textContent = `${currentPlayer.getName()} is the winner!`;
+            }
+            
+            // disable the game
+            startButton.textContent = 'Restart';
+            activateBoard(false);
+            toggleIsPlaying();
 
+            // Clear the gameboard
+            Gameboard.initBoard();
+
+        } else {
+            // Switch turns
+            toggleIsPlayer1Turn();
+        }
+ 
     }
 
     startButton.addEventListener('click', function(e) {
