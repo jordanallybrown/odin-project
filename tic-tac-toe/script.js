@@ -111,7 +111,14 @@ const AIPlayer = (name, symbol) => {
     // put all the properties of prototype and aiplayer methods into a new object
     return Object.assign({}, prototype, {getPosition});
 }
-
+/**
+ * TODOS:
+ * 1) Modularize repetitive code (restart game method that resets all values, player 1 should also always go first/ clear the board display back to blank buttons, etc.)
+ * 2) allow the player to enter their name before starting the game 
+ * 3) let the computer play in the game (as O)
+ * 
+ * That's all I want to do with Tictactoe... Once this is complete move on to next lesson
+ */
 const GameController = (() => {
     const startButton = document.querySelector('#start-btn');
     const messageDisplay = document.querySelector('#status');
