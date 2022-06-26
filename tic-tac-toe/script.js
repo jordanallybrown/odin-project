@@ -28,7 +28,13 @@ const Gameboard = (() => {
 
     const getOpenPositions = () => {
         // return array of all the positions that are NOT null
-        return gameboard.filter(position => position !== null)
+        const result = [];
+        gameboard.forEach( (element, index) => {
+            if (element === null) {
+                result.push(index);
+            }
+        });
+        return result;
     }
 
     const isBoardFull = () => {
@@ -107,36 +113,29 @@ const Player = (name, symbol) => {
 const AIPlayer = (name, symbol) => {
     const prototype = Player(name, symbol);
     
-    const getPosition = (positions) => Math.floor(Math.random() * positions.length);
+    const getPosition = (positions) => {
+        let index = Math.floor(Math.random() * positions.length);
+        return positions[index];
+    }
+    
     // put all the properties of prototype and aiplayer methods into a new object
     return Object.assign({}, prototype, {getPosition});
 }
-/**
- * TODOS:
- * 1) Modularize repetitive code (restart game method that resets all values, player 1 should also always go first/ clear the board display back to blank buttons, etc.)
- * 2) allow the player to enter their name before starting the game 
- * 3) let the computer play in the game (as O)
- * 
- * That's all I want to do with Tictactoe... Once this is complete move on to next lesson
- */
+
 const GameController = (() => {
     const startButton = document.querySelector('#start-btn');
     const messageDisplay = document.querySelector('#status');
     const board = document.querySelector('.gameboard');
 
     // For now, hardcode the names and symbols
-    let player1 = Player('player1', 'X');
-    let player2 = Player('player2', 'O');
+    let player1 = Player('Player', 'X');
+    let player2 = AIPlayer('Computer', 'O');
     let isPlaying = false;
-    let isPlayer1Turn = true;
 
     const toggleIsPlaying = () => {
         isPlaying = !isPlaying; 
     }
 
-    const toggleIsPlayer1Turn = () => {
-        isPlayer1Turn = !isPlayer1Turn;
-    }
 
     const setupBoard = () => {
         let fragment = document.createDocumentFragment();
@@ -153,63 +152,98 @@ const GameController = (() => {
             index++;
         }
         board.appendChild(fragment);
-        activateBoard(false);
+        activateSquares(false);
 
         Gameboard.initBoard();
     }
 
-    const activateBoard = (enable) => {
+    const activateSquares = (enable) => {
         const allButtons = document.querySelectorAll('.gameboard button');
         allButtons.forEach(button => {
             button.disabled = enable ? false : true;
         });
     }
 
-    const updateGame = (index) => {
-        let currentPlayer = isPlayer1Turn ? player1 : player2;
-        let square = document.querySelector(`[data-index='${index}']`);
+    const resetSquares = () => {
+        const allButtons = document.querySelectorAll('.gameboard button');
+        allButtons.forEach(button => {
+            button.textContent = '';
+        }); 
+    }
 
-        let isMarked = false;
-        do {
-            isMarked = Gameboard.markBoard(index, currentPlayer.getSymbol());
-        } while (!isMarked); 
+    const setMessageDisplay = (message) => {
+        messageDisplay.textContent = message;
+    }
 
-        // Update the display to reflect underlying Gameboard
-        square.textContent = currentPlayer.getSymbol();
-
-        // Check for a winner to see if game is over
-        const gameStatus = Gameboard.checkWinner();
-
-        if (gameStatus.isGameOver) {
-            // display the winner
-            if (gameStatus.result === 'tie') {
-                messageDisplay.textContent = `It's a tie!`;
-            } else {
-                messageDisplay.textContent = `${currentPlayer.getName()} is the winner!`;
-            }
-            
-            // disable the game
-            startButton.textContent = 'Restart';
-            activateBoard(false);
-            toggleIsPlaying();
-
-            // Clear the gameboard
-            Gameboard.initBoard();
-
+    const endGame = (gameStatus) => {
+        // display the winner
+        if (gameStatus.result === 'tie') {
+            setMessageDisplay(`It's a tie!`);
         } else {
-            // Switch turns
-            toggleIsPlayer1Turn();
+            setMessageDisplay(`${gameStatus.symbol} is the winner!`);
         }
- 
+
+        Gameboard.initBoard();
+        toggleIsPlaying();
+        activateSquares(false);
+    }
+
+    const playerMove = (index) => {
+        
+        // If player picked valid square, mark the underlying board
+        let isMarked = Gameboard.markBoard(index, player1.getSymbol());
+
+        // Return true if player successfully marked board, false otherwise
+        if (isMarked) {
+            // update the display and square with player's choice
+            let square = document.querySelector(`[data-index='${index}']`);
+            square.textContent = player1.getSymbol();
+            return true;
+        }
+
+        return false;
+    }
+
+    const computerMove = () => {
+        let position = player2.getPosition(Gameboard.getOpenPositions());
+        Gameboard.markBoard(position, player2.getSymbol());
+        let square = document.querySelector(`[data-index='${position}']`);
+        square.textContent = player2.getSymbol();
+    }
+
+    const updateGame = (index) => {
+        let gameStatus;
+        // Let the player make a move and mark board
+        let isPlayerMove = playerMove(index);
+
+        if (isPlayerMove) {
+            gameStatus = Gameboard.checkWinner()
+            if (gameStatus.isGameOver) {
+                endGame(gameStatus);
+            } else {
+                // Let the computer play and check game status again
+                computerMove();
+                gameStatus = Gameboard.checkWinner()
+                if (gameStatus.isGameOver) {
+                    endGame(gameStatus);
+                }
+
+            }
+
+        }
+
     }
 
     startButton.addEventListener('click', function(e) {
             if (isPlaying) {
                 e.target.textContent = 'Start';
-                activateBoard(false);
+                activateSquares(false);
             } else {
                 e.target.textContent = 'Restart';
-                activateBoard(true);
+                activateSquares(true);
+                resetSquares();
+                setMessageDisplay('');
+                
             }
             toggleIsPlaying();
     });
